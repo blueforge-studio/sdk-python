@@ -41,7 +41,9 @@ def test_auto_flush_when_buffer_fills(monkeypatch):
 
 def test_flush_on_empty_buffer_is_noop():
     client = _client()
-    client.flush()  # no fetch should be attempted
+    with patch("blueforge_analytics_os.client.urlrequest.urlopen") as m:
+        client.flush()  # no fetch should be attempted
+        m.assert_not_called()
 
 
 def test_overflow_drops_events_silently(monkeypatch):
@@ -63,3 +65,5 @@ def test_overflow_drops_events_silently(monkeypatch):
     client.flush()
     # max_buffer_size=3 → only the first 3 should be sent.
     assert sum(len(batch) for batch in sent) == 3
+    flat = [e for batch in sent for e in batch]
+    assert [e["distinctId"] for e in flat] == ["u0", "u1", "u2"]

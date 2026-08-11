@@ -64,6 +64,7 @@ class AnalyticsOsClient:
             try:
                 req = urlrequest.Request(url, data=body, headers=req_headers, method="POST")
                 with urlrequest.urlopen(req, timeout=5) as resp:
+                    # 5xx is raised as HTTPError and handled below; resp.status >= 200 here.
                     if resp.status < 500:
                         return
             except HTTPError as e:
