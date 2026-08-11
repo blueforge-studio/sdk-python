@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "blueforge-analytics-os"
+version = "0.1.0"
+description = "Python client for the BlueForge analytics-os capture API"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "BlueForge Studio" }]
+dependencies = []
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/blueforge_analytics_os"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
