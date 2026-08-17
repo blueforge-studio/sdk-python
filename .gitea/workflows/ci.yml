@@ -15,8 +15,9 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
-    container: python:${{ matrix.python-version }}-slim
     steps:
       - uses: actions/checkout@v4
-      - run: pip install -e packages/analytics-os pytest
-      - run: pytest
+      - name: Install deps + run tests (Python ${{ matrix.python-version }})
+        uses: docker://python:${{ matrix.python-version }}-slim
+        with:
+          args: sh -c "pip install -e packages/analytics-os pytest && pytest"
